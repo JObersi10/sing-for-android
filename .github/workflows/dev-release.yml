@@ -30,8 +30,11 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Accept Android SDK licenses
+        # ubuntu-latest runners already ship a full Android SDK at $ANDROID_HOME;
+        # android-actions/setup-android fails trying to fetch the removed
+        # legacy 'tools' package, so just accept licenses on the preinstalled one.
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
