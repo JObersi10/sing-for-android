@@ -24,8 +24,10 @@ import org.francasio.sing.audio.AudioProcessorBridge
 import org.francasio.sing.audio.SingAudioProcessor
 import org.francasio.sing.clock.MediaClockSyncHook
 import org.francasio.sing.hooks.AudioPipelineHooks
+import org.francasio.sing.hooks.LandscapePlayerHooks
 import org.francasio.sing.hooks.LyricsHooks
 import org.francasio.sing.hooks.VocalControlHooks
+import org.francasio.sing.hooks.VolumeSliderHooks
 import org.francasio.sing.util.ReflectionUtils
 import java.io.File
 import java.io.FileOutputStream
@@ -86,6 +88,20 @@ class SingXposedEntry : XposedModule() {
             updateSliderIcon = ::updateSliderIcon,
             defaultVocalFloor = { defaultM0 },
             onSingModeChanged = ::onSingModeChanged,
+            logInfo = ::logInfo,
+            logError = ::logError
+        )
+    }
+
+    private val volumeSliderHooks by lazy {
+        VolumeSliderHooks(
+            logInfo = ::logInfo,
+            logError = ::logError
+        )
+    }
+
+    private val landscapePlayerHooks by lazy {
+        LandscapePlayerHooks(
             logInfo = ::logInfo,
             logError = ::logError
         )
@@ -774,6 +790,8 @@ class SingXposedEntry : XposedModule() {
         audioPipelineHooks.install(cl)
         hookPlaybackController(cl)
         lyricsHooks.install(cl)
+        volumeSliderHooks.install(cl) { executable, hooker -> hookMethod(executable, hooker = hooker) }
+        landscapePlayerHooks.install(cl) { executable, hooker -> hookMethod(executable, hooker = hooker) }
         hookCrossFade(cl)
         MediaClockSyncHook.hook(this, cl)
     }

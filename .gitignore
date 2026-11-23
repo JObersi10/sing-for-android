@@ -7,6 +7,10 @@
 app/release/
 release/
 
+# Extracted reference APK (used for RE research, not part of the fork)
+*.xapk
+/Apple+Music_*/
+
 # Keystore files
 *.jks
 *.keystore

@@ -259,6 +259,8 @@ dependencies {
     // Vector 2.2 and LSPatch 1.2 provide libxposed API 102 at runtime. Keep compileOnly.
     compileOnly("io.github.libxposed:api:102.0.0")
     implementation("io.github.libxposed:service:102.0.0")
+    // Apple Music's Now Playing screen already ships ConstraintLayout at runtime. Keep compileOnly.
+    compileOnly("androidx.constraintlayout:constraintlayout:2.0.1")
     implementation("com.microsoft.onnxruntime:onnxruntime-android-qnn:1.29.0")
     implementation("com.qualcomm.qti:qnn-runtime:2.51.0")
     implementation("androidx.annotation:annotation:1.8.2")
